@@ -9,18 +9,17 @@ import java.util.List;
 public class ApiResponse {
 
     @SerializedName("STATUS")
-    @Expose
-    private String sTATUS;
+    private String status;
     @SerializedName("projects")
     @Expose
     private List<Project> projects = null;
 
-    public String getSTATUS() {
-        return sTATUS;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSTATUS(String sTATUS) {
-        this.sTATUS = sTATUS;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<Project> getProjects() {
@@ -30,5 +29,4 @@ public class ApiResponse {
     public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
-
 }

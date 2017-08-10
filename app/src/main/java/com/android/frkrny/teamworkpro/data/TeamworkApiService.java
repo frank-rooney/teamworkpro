@@ -1,5 +1,7 @@
 package com.android.frkrny.teamworkpro.data;
 
+import com.android.frkrny.teamworkpro.data.model.ApiResponse;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -10,7 +12,10 @@ import retrofit2.http.GET;
 
 public interface TeamworkApiService {
 
-    String API_END_POINT = "";
-    @GET("")
-    Call<List<Project>> getProjects();
+    String BASE_URL = "http://www.eu.teamwork.com";
+
+    @GET("/projects.json")
+    Call<ApiResponse> getProjects();
+
+
 }
