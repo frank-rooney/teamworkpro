@@ -1,65 +1,42 @@
 
 package com.android.frkrny.teamworkpro.data.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Project {
 
     @SerializedName("company")
-    @Expose
     private Company company;
     @SerializedName("starred")
-    @Expose
     private Boolean starred;
     @SerializedName("name")
-    @Expose
     private String name;
     @SerializedName("show-announcement")
-    @Expose
     private Boolean showAnnouncement;
     @SerializedName("announcement")
-    @Expose
     private String announcement;
     @SerializedName("description")
-    @Expose
     private String description;
     @SerializedName("status")
-    @Expose
     private String status;
-    @SerializedName("isProjectAdmin")
-    @Expose
-    private Boolean isProjectAdmin;
     @SerializedName("created-on")
-    @Expose
     private String createdOn;
     @SerializedName("category")
-    @Expose
     private Category category;
     @SerializedName("start-page")
-    @Expose
     private String startPage;
     @SerializedName("startDate")
-    @Expose
     private String startDate;
     @SerializedName("logo")
-    @Expose
     private String logo;
     @SerializedName("notifyeveryone")
-    @Expose
-    private Boolean notifyeveryone;
+    private Boolean notifyEveryone;
     @SerializedName("id")
-    @Expose
     private String id;
     @SerializedName("last-changed-on")
-    @Expose
     private String lastChangedOn;
     @SerializedName("endDate")
-    @Expose
     private String endDate;
-    @SerializedName("harvest-timers-enabled")
-    @Expose
-    private String harvestTimersEnabled;
 
     public Company getCompany() {
         return company;
@@ -117,14 +94,6 @@ public class Project {
         this.status = status;
     }
 
-    public Boolean getIsProjectAdmin() {
-        return isProjectAdmin;
-    }
-
-    public void setIsProjectAdmin(Boolean isProjectAdmin) {
-        this.isProjectAdmin = isProjectAdmin;
-    }
-
     public String getCreatedOn() {
         return createdOn;
     }
@@ -165,12 +134,12 @@ public class Project {
         this.logo = logo;
     }
 
-    public Boolean getNotifyeveryone() {
-        return notifyeveryone;
+    public Boolean getNotifyEveryone() {
+        return notifyEveryone;
     }
 
-    public void setNotifyeveryone(Boolean notifyeveryone) {
-        this.notifyeveryone = notifyeveryone;
+    public void setNotifyEveryone(Boolean notifyeveryone) {
+        this.notifyEveryone = notifyeveryone;
     }
 
     public String getId() {
@@ -196,13 +165,4 @@ public class Project {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
-
-    public String getHarvestTimersEnabled() {
-        return harvestTimersEnabled;
-    }
-
-    public void setHarvestTimersEnabled(String harvestTimersEnabled) {
-        this.harvestTimersEnabled = harvestTimersEnabled;
-    }
-
 }
