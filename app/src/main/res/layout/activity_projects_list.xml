@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.frkrny.teamworkpro.ProjectsActivity">
+    tools:context="com.android.frkrny.teamworkpro.ui.projectslist.ProjectsActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/projects_list"

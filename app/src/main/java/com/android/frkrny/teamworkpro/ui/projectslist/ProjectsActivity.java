@@ -1,13 +1,16 @@
-package com.android.frkrny.teamworkpro;
+package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.frkrny.teamworkpro.ProjectApplication;
+import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
 
 import retrofit2.Call;
@@ -25,12 +28,18 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects_list);
         getUIReferences();
+        setupProjectsList();
         makeGetProjectsApiCall();
     }
 
     private void getUIReferences() {
         loadingBar = (ProgressBar) findViewById(R.id.loading_progress);
         projectsList = (RecyclerView) findViewById(R.id.projects_list);
+    }
+
+    private void setupProjectsList() {
+        projectsList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        projectsList.setHasFixedSize(true);
     }
 
     private void makeGetProjectsApiCall() {
@@ -73,6 +82,10 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
     public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
         if (response.isSuccessful()) {
             loadingBar.setVisibility(View.INVISIBLE);
+            if(response.body() != null && response.body().getProjects() != null) {
+                ProjectsAdapter adapter = new ProjectsAdapter(this, response.body().getProjects());
+                projectsList.setAdapter(adapter);
+            }
         }
     }
 

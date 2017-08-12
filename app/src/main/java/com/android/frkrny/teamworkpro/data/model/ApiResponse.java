@@ -1,7 +1,6 @@
 
 package com.android.frkrny.teamworkpro.data.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,8 +10,7 @@ public class ApiResponse {
     @SerializedName("STATUS")
     private String status;
     @SerializedName("projects")
-    @Expose
-    private List<Project> projects = null;
+    private List<Project> projects;
 
     public String getStatus() {
         return status;

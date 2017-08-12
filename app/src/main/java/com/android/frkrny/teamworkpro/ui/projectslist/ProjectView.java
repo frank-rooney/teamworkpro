@@ -1,4 +1,4 @@
-package com.android.frkrny.teamworkpro;
+package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.Project;
 import com.squareup.picasso.Picasso;
 

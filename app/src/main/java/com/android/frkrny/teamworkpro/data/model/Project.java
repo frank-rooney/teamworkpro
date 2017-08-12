@@ -142,8 +142,12 @@ public class Project {
         this.notifyEveryone = notifyeveryone;
     }
 
-    public String getId() {
-        return id;
+    public long getId() {
+        try {
+            return Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     public void setId(String id) {

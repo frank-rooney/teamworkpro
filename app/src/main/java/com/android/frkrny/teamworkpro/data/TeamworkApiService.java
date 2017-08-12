@@ -63,7 +63,7 @@ public interface TeamworkApiService {
             String plainToken = String.format(Locale.UK, "%s:%s", BuildConfig.API_TOKEN, "123abc");
             String base64Token;
             try {
-                base64Token = Base64.encodeToString(plainToken.getBytes("utf-8"), Base64.DEFAULT);
+                base64Token = Base64.encodeToString(plainToken.getBytes("utf-8"), Base64.URL_SAFE);
                 this.authToken = String.format(Locale.UK, "Basic %s", base64Token);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
