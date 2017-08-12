@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.frkrny.teamworkpro.R;
+import com.android.frkrny.teamworkpro.custom.RoundedTransformBuilder;
 import com.android.frkrny.teamworkpro.data.model.Project;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 /**
  * Created by frankrooney on 12/08/2017.
@@ -20,24 +22,46 @@ import com.squareup.picasso.Picasso;
 public class ProjectView extends CardView {
 
     private ImageView projectLogo;
-    private TextView projectName;
+    private TextView projectName, companyName;
+    private Transformation transformation;
     private Project project;
 
     public ProjectView(Context context) {
         super(context);
+        setupCardViewProperties();
+        inflateLayoutAndSetLayoutParams(context);
+        getUIReferences();
+        setupRoundedLogoTransformation();
+    }
+
+    private void setupRoundedLogoTransformation() {
+        transformation = new RoundedTransformBuilder()
+                .cornerRadiusDp(48f)
+                .build();
+    }
+
+    private void inflateLayoutAndSetLayoutParams(Context context) {
+        LayoutInflater.from(context).inflate(R.layout.project_row, this, true);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        setLayoutParams(params);
+    }
+
+    private void setupCardViewProperties() {
         setUseCompatPadding(true);
         setRadius(5f);
         setElevation(2f);
-        LayoutInflater.from(context).inflate(R.layout.project_row, this, true);
-        CardView.LayoutParams params = new CardView.LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        setLayoutParams(params);
+    }
+
+    private void getUIReferences() {
         projectName = (TextView) findViewById(R.id.project_name);
+        companyName = (TextView) findViewById(R.id.project_company);
         projectLogo = (ImageView) findViewById(R.id.project_logo);
     }
 
     public void bind(Project project) {
         this.project = project;
         displayTitle();
+        displayCompany();
         displayLogo();
     }
 
@@ -45,9 +69,13 @@ public class ProjectView extends CardView {
         projectName.setText(project.getName());
     }
 
+    private void displayCompany() {
+        companyName.setText(project.getCompany().getName());
+    }
+
     private void displayLogo() {
         if(!TextUtils.isEmpty(project.getLogo())) {
-            Picasso.with(getContext()).load(project.getLogo()).fit().into(projectLogo);
+            Picasso.with(getContext()).load(project.getLogo()).fit().transform(transformation).into(projectLogo);
         }
     }
 }

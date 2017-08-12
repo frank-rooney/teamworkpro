@@ -38,11 +38,24 @@
             android:layout_toEndOf="@+id/project_logo"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:textColor="@color/primary_text"
             android:fontFamily="sans-serif"
             tools:text="My New Project Idea"/>
+
+        <TextView
+            android:id="@+id/project_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/project_name"
+            android:layout_toRightOf="@+id/project_logo"
+            android:layout_toEndOf="@+id/project_logo"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            android:fontFamily="sans-serif"
+            tools:text="Cool company"/>
 
     </RelativeLayout>
 
