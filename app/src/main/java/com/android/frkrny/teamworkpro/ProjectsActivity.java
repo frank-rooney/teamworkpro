@@ -84,7 +84,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
      * @param t    The error that stopped the call from working.
      */
     @Override
-    public void onFailure(Call<ApiResponse> call, Throwable t) {
+    public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
         Toast.makeText(ProjectsActivity.this, R.string.error_message, Toast.LENGTH_LONG).show();
     }
 }
