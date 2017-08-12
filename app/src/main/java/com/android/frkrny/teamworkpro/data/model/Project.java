@@ -12,7 +12,7 @@ public class Project {
     @SerializedName("name")
     private String name;
     @SerializedName("show-announcement")
-    private Boolean showAnnouncement;
+    private boolean showAnnouncement;
     @SerializedName("announcement")
     private String announcement;
     @SerializedName("description")
@@ -30,7 +30,7 @@ public class Project {
     @SerializedName("logo")
     private String logo;
     @SerializedName("notifyeveryone")
-    private Boolean notifyEveryone;
+    private boolean notifyEveryone;
     @SerializedName("id")
     private String id;
     @SerializedName("last-changed-on")
@@ -46,7 +46,7 @@ public class Project {
         this.company = company;
     }
 
-    public Boolean getStarred() {
+    public Boolean isStarred() {
         return starred;
     }
 
@@ -62,7 +62,7 @@ public class Project {
         this.name = name;
     }
 
-    public Boolean getShowAnnouncement() {
+    public Boolean isShowAnnouncement() {
         return showAnnouncement;
     }
 
@@ -134,12 +134,12 @@ public class Project {
         this.logo = logo;
     }
 
-    public Boolean getNotifyEveryone() {
+    public boolean isNotifyEveryone() {
         return notifyEveryone;
     }
 
-    public void setNotifyEveryone(Boolean notifyeveryone) {
-        this.notifyEveryone = notifyeveryone;
+    public void setNotifyEveryone(boolean notifyEveryone) {
+        this.notifyEveryone = notifyEveryone;
     }
 
     public long getId() {
