@@ -16,6 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,7 +29,7 @@ import retrofit2.http.GET;
 
 public interface TeamworkApiService {
 
-    String BASE_URL = "http://www.eu.teamwork.com";
+    String BASE_URL = "https://yat.teamwork.com";
 
     @GET("/projects.json")
     Call<ApiResponse> getActiveProjects();
@@ -38,8 +39,12 @@ public interface TeamworkApiService {
 
         public static TeamworkApiService newTeamworkService() {
 
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthenticationInterceptor());
+                    .addInterceptor(new AuthenticationInterceptor())
+                    .addInterceptor(interceptor);
 
             Gson gson = new GsonBuilder().create();
 
@@ -60,10 +65,11 @@ public interface TeamworkApiService {
         private String authToken;
 
         AuthenticationInterceptor() {
+            String t = BuildConfig.API_TOKEN;
             String plainToken = String.format(Locale.UK, "%s:%s", BuildConfig.API_TOKEN, "123abc");
             String base64Token;
             try {
-                base64Token = Base64.encodeToString(plainToken.getBytes("utf-8"), Base64.URL_SAFE);
+                base64Token = Base64.encodeToString(plainToken.getBytes("utf-8"), Base64.NO_WRAP);
                 this.authToken = String.format(Locale.UK, "Basic %s", base64Token);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();

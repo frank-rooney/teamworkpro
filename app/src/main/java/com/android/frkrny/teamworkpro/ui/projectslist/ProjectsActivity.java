@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import com.android.frkrny.teamworkpro.ProjectApplication;
 import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
+
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +89,8 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
                 ProjectsAdapter adapter = new ProjectsAdapter(this, response.body().getProjects());
                 projectsList.setAdapter(adapter);
             }
+        } else {
+            Toast.makeText(ProjectsActivity.this, String.format(Locale.UK, "Error Http Code: %d", response.code()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -98,6 +103,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
      */
     @Override
     public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
+        Log.e("error", Log.getStackTraceString(t));
         Toast.makeText(ProjectsActivity.this, R.string.error_message, Toast.LENGTH_LONG).show();
     }
 }

@@ -16,12 +16,12 @@ import static android.support.v7.widget.RecyclerView.NO_ID;
  * A {@link android.support.v7.widget.RecyclerView} adapter for displaying projects.
  */
 
-public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private List<Project> projects;
 
-    public ProjectsAdapter(Context context, List<Project> projects) {
+    ProjectsAdapter(Context context, List<Project> projects) {
         this.context = context;
         this.projects = projects;
         setHasStableIds(true);
@@ -38,7 +38,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Project project = projects.get(position);
-        ((ProjectViewHolder)holder).projectView.bind(project);
+        ((ProjectViewHolder)holder).getProjectView().bind(project);
     }
 
     @Override
@@ -55,15 +55,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class ProjectViewHolder extends RecyclerView.ViewHolder {
+    private static class ProjectViewHolder extends RecyclerView.ViewHolder {
 
         private ProjectView projectView;
 
-        public ProjectViewHolder(View view) {
+        ProjectViewHolder(View view) {
             super(view);
         }
 
-        public void setProjectView(ProjectView projectView) {
+        public ProjectView getProjectView() {
+            return projectView;
+        }
+
+        void setProjectView(ProjectView projectView) {
             this.projectView = projectView;
         }
     }
