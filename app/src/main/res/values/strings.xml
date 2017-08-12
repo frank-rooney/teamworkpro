@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TeamworkPro</string>
+
+    <string name="error_message">Something went wrong… try again.</string>
 </resources>
