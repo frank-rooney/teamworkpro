@@ -22,7 +22,7 @@ import com.squareup.picasso.Transformation;
 public class ProjectView extends CardView {
 
     private ImageView projectLogo;
-    private TextView projectName, companyName;
+    private TextView projectName, companyName, description;
     private Transformation transformation;
     private Project project;
 
@@ -55,6 +55,7 @@ public class ProjectView extends CardView {
     private void getUIReferences() {
         projectName = (TextView) findViewById(R.id.project_name);
         companyName = (TextView) findViewById(R.id.project_company);
+        description = (TextView) findViewById(R.id.project_description);
         projectLogo = (ImageView) findViewById(R.id.project_logo);
     }
 
@@ -62,6 +63,7 @@ public class ProjectView extends CardView {
         this.project = project;
         displayTitle();
         displayCompany();
+        displayDescription();
         displayLogo();
     }
 
@@ -73,9 +75,15 @@ public class ProjectView extends CardView {
         companyName.setText(project.getCompany().getName());
     }
 
+    private void displayDescription() {
+        description.setText(project.getDescription());
+    }
+
     private void displayLogo() {
         if(!TextUtils.isEmpty(project.getLogo())) {
             Picasso.with(getContext()).load(project.getLogo()).fit().transform(transformation).into(projectLogo);
+        } else {
+            projectLogo.setImageResource(R.drawable.ic_logo_placeholder);
         }
     }
 }
