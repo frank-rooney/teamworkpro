@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -13,8 +12,6 @@ import android.widget.Toast;
 import com.android.frkrny.teamworkpro.ProjectApplication;
 import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
-
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +32,18 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
         makeGetProjectsApiCall();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cancelApiRequest();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelApiRequest();
+    }
+
     private void getUIReferences() {
         loadingBar = (ProgressBar) findViewById(R.id.loading_progress);
         projectsList = (RecyclerView) findViewById(R.id.projects_list);
@@ -53,22 +62,14 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        cancelApiRequest();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        cancelApiRequest();
-    }
-
     private void cancelApiRequest() {
         if (apiCall != null && !apiCall.isExecuted()) {
             apiCall.cancel();
         }
+    }
+
+    private void hideLoadingBar() {
+        loadingBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -81,16 +82,15 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
      * @param call     The call that was made
      * @param response The response from the call
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
         if (response.isSuccessful()) {
-            loadingBar.setVisibility(View.INVISIBLE);
-            if(response.body() != null && response.body().getProjects() != null) {
-                ProjectsAdapter adapter = new ProjectsAdapter(this, response.body().getProjects());
-                projectsList.setAdapter(adapter);
-            }
+            hideLoadingBar();
+            ProjectsAdapter adapter = new ProjectsAdapter(this, response.body().getProjects());
+            projectsList.setAdapter(adapter);
         } else {
-            Toast.makeText(ProjectsActivity.this, String.format(Locale.UK, "Error Http Code: %d", response.code()), Toast.LENGTH_LONG).show();
+            Toast.makeText(ProjectsActivity.this, response.message(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -103,7 +103,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
      */
     @Override
     public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
-        Log.e("error", Log.getStackTraceString(t));
+        hideLoadingBar();
         Toast.makeText(ProjectsActivity.this, R.string.error_message, Toast.LENGTH_LONG).show();
     }
 }

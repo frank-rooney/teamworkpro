@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,12 @@ public class ProjectView extends CardView {
 
     public ProjectView(Context context) {
         super(context);
+        setUseCompatPadding(true);
+        setRadius(5f);
+        setElevation(2f);
         LayoutInflater.from(context).inflate(R.layout.project_row, this, true);
+        CardView.LayoutParams params = new CardView.LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        setLayoutParams(params);
         projectName = (TextView) findViewById(R.id.project_name);
         projectLogo = (ImageView) findViewById(R.id.project_logo);
     }
