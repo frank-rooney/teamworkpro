@@ -190,7 +190,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case R.id.show_info:
-                Snackbar.make(root, R.string.multiple_tasks_tip, Snackbar.LENGTH_INDEFINITE).show();
+                Snackbar.make(root, R.string.multiple_tasks_tip, Snackbar.LENGTH_LONG).show();
                 break;
         }
     }
