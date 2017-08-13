@@ -2,7 +2,11 @@ package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.animation.AnimatorInflater;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -129,6 +133,7 @@ public class ProjectView extends CardView {
             try {
                 Date projectStartDate = receivedFormat.parse(project.getStartDate());
                 startDate.setText(DateUtils.getRelativeTimeSpanString(getContext(), projectStartDate.getTime()));
+                applyTintToLeftDrawable(startDate, R.color.start_date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -146,12 +151,23 @@ public class ProjectView extends CardView {
             try {
                 Date projectEndDate = receivedFormat.parse(project.getEndDate());
                 endDate.setText(DateUtils.formatDateTime(getContext(), projectEndDate.getTime(), 0));
+                applyTintToLeftDrawable(endDate, R.color.due_date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
             endDate.setText("");
         }
+    }
+
+    /**
+     * Applies a tint to the drawable left icon of the passed TextView.
+     */
+    private void applyTintToLeftDrawable(TextView textView, @ColorRes int color) {
+        Drawable icon = textView.getCompoundDrawables()[0];
+        Drawable wrapped = DrawableCompat.wrap(icon);
+        DrawableCompat.setTint(wrapped.mutate(), ContextCompat.getColor(getContext(), color));
+        textView.setCompoundDrawables(wrapped, null, null, null);
     }
 
     private void displayCategory() {
