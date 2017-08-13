@@ -96,4 +96,6 @@
     <string name="task_name">Task name</string>
     <string name="task_added_ok">Task Added Successfully</string>
     <string name="error_no_task_list_selected">Task list must be choosen.</string>
+    <string name="error_task_name_cannot_be_empty">Task name cannot be empty.</string>
+    <string name="title_add_tasks">" - Add Tasks"</string>
 </resources>

@@ -77,7 +77,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     private void displayProjectDetails() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(project.getName() + " - Add Tasks");
+        getSupportActionBar().setTitle(project.getName() + getString(R.string.title_add_tasks));
     }
 
     private void animateReveal() {
@@ -176,7 +176,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     private boolean validateFieldsNotEmpty() {
         if(newTaskName.getText().length() == 0) {
-            inputLayout.setError("Task name cannot be empty.");
+            inputLayout.setError(getString(R.string.error_task_name_cannot_be_empty));
             return false;
         } if(getSelectedTaskList() == null) {
             Snackbar.make(root, R.string.error_no_task_list_selected, Snackbar.LENGTH_LONG).show();
@@ -216,10 +216,11 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
                 setupTaskListsSpinner(response);
                 animateReveal();
             } if (response.code() == 201) {
+                newTaskName.setText("");
                 Snackbar.make(root, R.string.task_added_ok, Snackbar.LENGTH_LONG).show();
             }
         } else {
-            Snackbar.make(root, response.message(), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, response.message(), Snackbar.LENGTH_INDEFINITE).show();
         }
     }
 
@@ -232,6 +233,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
-        Snackbar.make(root, R.string.error_message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(root, R.string.error_message, Snackbar.LENGTH_INDEFINITE).show();
     }
 }

@@ -2,12 +2,13 @@ package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.frkrny.teamworkpro.ProjectApplication;
 import com.android.frkrny.teamworkpro.R;
@@ -19,6 +20,7 @@ import retrofit2.Response;
 
 public class ProjectsActivity extends AppCompatActivity implements Callback<ApiResponse> {
 
+    private ViewGroup root;
     private ProgressBar loadingBar;
     private RecyclerView projectsList;
     private Call<ApiResponse> apiCall;
@@ -45,6 +47,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
     }
 
     private void getUIReferences() {
+        root = (ViewGroup) findViewById(R.id.root);
         loadingBar = (ProgressBar) findViewById(R.id.loading_progress);
         projectsList = (RecyclerView) findViewById(R.id.projects_list);
     }
@@ -89,7 +92,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
             ProjectsAdapter adapter = new ProjectsAdapter(this, response.body().getProjects());
             projectsList.setAdapter(adapter);
         } else {
-            Toast.makeText(ProjectsActivity.this, response.message(), Toast.LENGTH_LONG).show();
+            Snackbar.make(root, response.message(), Snackbar.LENGTH_INDEFINITE).show();
         }
     }
 
@@ -103,6 +106,6 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
     @Override
     public void onFailure(@NonNull Call<ApiResponse> call, @NonNull Throwable t) {
         hideLoadingBar();
-        Toast.makeText(ProjectsActivity.this, R.string.error_message, Toast.LENGTH_LONG).show();
+        Snackbar.make(root, R.string.error_message, Snackbar.LENGTH_INDEFINITE).show();
     }
 }
