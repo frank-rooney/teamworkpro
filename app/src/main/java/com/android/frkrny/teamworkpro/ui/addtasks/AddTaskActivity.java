@@ -245,6 +245,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
             }
             if (response.code() == 200) {
                 newTaskName.setText("");
+                inputLayout.setError(null);
                 Snackbar.make(root, R.string.task_added_ok, Snackbar.LENGTH_LONG).show();
             }
         } else {
