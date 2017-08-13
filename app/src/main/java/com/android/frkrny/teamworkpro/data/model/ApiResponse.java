@@ -11,6 +11,8 @@ public class ApiResponse {
     private String status;
     @SerializedName("projects")
     private List<Project> projects;
+    @SerializedName("tasklists")
+    private List<TaskList> taskLists;
 
     public String getStatus() {
         return status;

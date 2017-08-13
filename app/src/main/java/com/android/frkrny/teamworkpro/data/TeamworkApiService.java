@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by frankrooney on 10/08/2017.
@@ -33,6 +34,11 @@ public interface TeamworkApiService {
 
     @GET("/projects.json")
     Call<ApiResponse> getActiveProjects();
+
+    @GET("/projects/{project_id}/tasklists.json")
+    Call<ApiResponse> getTaskListsForProject(@Path("project_id") String projectId);
+
+
 
     /******** Helper class that sets up a new services *******/
     class Creator {
