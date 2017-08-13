@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.custom.RoundedTransformBuilder;
 import com.android.frkrny.teamworkpro.data.model.Project;
-import com.android.frkrny.teamworkpro.ui.projectdetail.AddTaskActivity;
+import com.android.frkrny.teamworkpro.ui.addtasks.AddTaskActivity;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 

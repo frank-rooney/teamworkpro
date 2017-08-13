@@ -6,6 +6,7 @@ package com.android.frkrny.teamworkpro.data.model;
  */
 
 public class ToDoItem {
+
     private String content;
 
     public ToDoItem(String content) {

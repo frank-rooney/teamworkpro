@@ -5,7 +5,7 @@ import android.util.Base64;
 
 import com.android.frkrny.teamworkpro.BuildConfig;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
-import com.android.frkrny.teamworkpro.data.model.ToDoItem;
+import com.android.frkrny.teamworkpro.data.model.ToDoItemWrapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,7 +42,7 @@ public interface TeamworkApiService {
     Call<ApiResponse> getTaskListsForProject(@Path("project_id") String projectId);
 
     @POST("/tasklists/{id}/tasks.json")
-    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Body ToDoItem toDoItem);
+    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Body ToDoItemWrapper toDoItemWrapper);
 
 
     /******** Helper class that sets up a new services *******/

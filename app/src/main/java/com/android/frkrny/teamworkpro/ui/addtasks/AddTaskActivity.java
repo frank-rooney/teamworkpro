@@ -1,4 +1,4 @@
-package com.android.frkrny.teamworkpro.ui.projectdetail;
+package com.android.frkrny.teamworkpro.ui.addtasks;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +18,7 @@ import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
 import com.android.frkrny.teamworkpro.data.model.Project;
 import com.android.frkrny.teamworkpro.data.model.TaskList;
-import com.android.frkrny.teamworkpro.data.model.ToDoItem;
+import com.android.frkrny.teamworkpro.data.model.ToDoItemWrapper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,8 +101,8 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if(validateFieldsNotEmpty()) {
             TaskList selected = getSelectedTaskList();
-            ToDoItem toDoItem = new ToDoItem(newTaskName.getText().toString());
-            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTaskToTaskList(selected.getId(), toDoItem);
+            ToDoItemWrapper toDoItemWrapper = new ToDoItemWrapper(newTaskName.getText().toString());
+            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTaskToTaskList(selected.getId(), toDoItemWrapper);
             apiCallAddTask.enqueue(this);
         }
     }
@@ -120,10 +120,16 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     private TaskList getSelectedTaskList() {
         TaskList selectedTaskList = (TaskList) taskLists.getSelectedItem();
-        if(!selectedTaskList.getId().equals("-1")) {
+        if(selectedTaskList != null && !selectedTaskList.getId().equals("-1")) {
             return selectedTaskList;
         }
         return null;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void setupTaskListsSpinner(@NonNull Response<ApiResponse> response) {
+        ArrayAdapter<TaskList> taskListsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, response.body().getTaskLists());
+        taskLists.setAdapter(taskListsAdapter);
     }
 
     /**
@@ -147,12 +153,6 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Snackbar.make(root, response.message(), Snackbar.LENGTH_LONG).show();
         }
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void setupTaskListsSpinner(@NonNull Response<ApiResponse> response) {
-        ArrayAdapter<TaskList> taskListsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, response.body().getTaskLists());
-        taskLists.setAdapter(taskListsAdapter);
     }
 
     /**
