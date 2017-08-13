@@ -90,7 +90,6 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
             projectsList.setAdapter(adapter);
         } else {
             Toast.makeText(ProjectsActivity.this, response.message(), Toast.LENGTH_LONG).show();
-
         }
     }
 

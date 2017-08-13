@@ -163,12 +163,13 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
      *
      * @param v The view that was clicked.
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onClick(View v) {
         if(validateFieldsNotEmpty()) {
             TaskList selected = getSelectedTaskList();
-            ToDoItemWrapper toDoItemWrapper = new ToDoItemWrapper(newTaskName.getText().toString());
-            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTaskToTaskList(selected.getId(), toDoItemWrapper);
+            ToDoItemWrapper toDoItemWrapper = new ToDoItemWrapper(newTaskName.getText().toString(), selected.getId());
+            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTasksToTaskList(selected.getId(), toDoItemWrapper);
             apiCallAddTask.enqueue(this);
         }
     }

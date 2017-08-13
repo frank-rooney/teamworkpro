@@ -43,8 +43,8 @@ public interface TeamworkApiService {
     @GET("/projects/{project_id}/tasklists.json")
     Call<ApiResponse> getTaskListsForProject(@Path("project_id") String projectId);
 
-    @POST("/tasklists/{id}/tasks.json")
-    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Body ToDoItemWrapper toDoItemWrapper);
+    @POST("/tasklists/{id}/quickadd.json")
+    Call<ApiResponse> addTasksToTaskList(@Path("id") String taskListId, @Body ToDoItemWrapper toDoItemWrapper);
 
 
     /******** Helper class that sets up a new services *******/
