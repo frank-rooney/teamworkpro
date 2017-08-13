@@ -29,4 +29,12 @@ public class ApiResponse {
     public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
+
+    public List<TaskList> getTaskLists() {
+        return taskLists;
+    }
+
+    public void setTaskLists(List<TaskList> taskLists) {
+        this.taskLists = taskLists;
+    }
 }

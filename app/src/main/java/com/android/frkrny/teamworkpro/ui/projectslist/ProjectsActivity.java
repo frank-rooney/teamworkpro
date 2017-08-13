@@ -63,7 +63,7 @@ public class ProjectsActivity extends AppCompatActivity implements Callback<ApiR
     }
 
     private void cancelApiRequest() {
-        if (apiCall != null && !apiCall.isExecuted()) {
+        if (apiCall != null) {
             apiCall.cancel();
         }
     }

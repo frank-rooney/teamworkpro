@@ -9,13 +9,13 @@ import com.google.gson.annotations.SerializedName;
 public class TaskList {
 
     @SerializedName("name")
-    public String name;
+    private String name;
     @SerializedName("description")
-    public String description;
+    private String description;
     @SerializedName("complete")
-    public boolean complete;
+    private boolean complete;
     @SerializedName("id")
-    public String id;
+    private String id;
 
     public TaskList() {}
 
@@ -49,5 +49,10 @@ public class TaskList {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }
