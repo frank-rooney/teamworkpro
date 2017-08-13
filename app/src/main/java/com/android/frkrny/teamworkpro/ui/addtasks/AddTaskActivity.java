@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -46,6 +47,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressBar loading;
     private NestedScrollView parent;
     private FloatingActionButton addTask;
+    private ImageButton showInfo;
     private Call<ApiResponse> apiCallTaskLists, apiCallAddTask;
     private Project project;
 
@@ -58,6 +60,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         displayProjectDetails();
         addTask.setOnClickListener(this);
+        showInfo.setOnClickListener(this);
         makeGetTaskListsApiCall();
     }
 
@@ -82,7 +85,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     private void animateReveal() {
         loading.setVisibility(View.GONE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             parent.postDelayed(new Runnable() {
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
@@ -107,10 +110,11 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Starts an animation to fade in a view.
+     *
      * @param view The View to fade in
      */
     private void fadeInView(final View view) {
-        if(view != null && view.getVisibility() == View.INVISIBLE ||
+        if (view != null && view.getVisibility() == View.INVISIBLE ||
                 view != null && view.getVisibility() == View.GONE) {
             view.setAlpha(Constants.TRANSPARENT);
             view.setVisibility(View.VISIBLE);
@@ -125,7 +129,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void retrieveProjectFromIntent() {
-        if(!getIntent().getExtras().isEmpty()) {
+        if (!getIntent().getExtras().isEmpty()) {
             project = getIntent().getParcelableExtra(KEY_PROJECT);
         } else {
             finish();
@@ -135,7 +139,8 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     private void cancelApiRequests() {
         if (apiCallTaskLists != null) {
             apiCallTaskLists.cancel();
-        } if(apiCallAddTask != null) {
+        }
+        if (apiCallAddTask != null) {
             apiCallAddTask.cancel();
         }
     }
@@ -156,6 +161,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         taskLists = (Spinner) findViewById(R.id.task_lists_spinner);
         loading = (ProgressBar) findViewById(R.id.loading_progress);
         parent = (NestedScrollView) findViewById(R.id.nested_scrollview_parent);
+        showInfo = (ImageButton) findViewById(R.id.show_info);
     }
 
     /**
@@ -166,19 +172,27 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onClick(View v) {
-        if(validateFieldsNotEmpty()) {
-            TaskList selected = getSelectedTaskList();
-            ToDoItemWrapper toDoItemWrapper = new ToDoItemWrapper(newTaskName.getText().toString(), selected.getId());
-            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTasksToTaskList(selected.getId(), toDoItemWrapper);
-            apiCallAddTask.enqueue(this);
+        switch (v.getId()) {
+            case R.id.fab:
+                if (validateFieldsNotEmpty()) {
+                    TaskList selected = getSelectedTaskList();
+                    ToDoItemWrapper toDoItemWrapper = new ToDoItemWrapper(newTaskName.getText().toString(), selected.getId());
+                    apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTasksToTaskList(selected.getId(), toDoItemWrapper);
+                    apiCallAddTask.enqueue(this);
+                }
+                break;
+            case R.id.show_info:
+                Snackbar.make(root, R.string.multiple_tasks_tip, Snackbar.LENGTH_INDEFINITE).show();
+                break;
         }
     }
 
     private boolean validateFieldsNotEmpty() {
-        if(newTaskName.getText().length() == 0) {
+        if (newTaskName.getText().length() == 0) {
             inputLayout.setError(getString(R.string.error_task_name_cannot_be_empty));
             return false;
-        } if(getSelectedTaskList() == null) {
+        }
+        if (getSelectedTaskList() == null) {
             Snackbar.make(root, R.string.error_no_task_list_selected, Snackbar.LENGTH_LONG).show();
             return false;
         }
@@ -187,7 +201,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
 
     private TaskList getSelectedTaskList() {
         TaskList selectedTaskList = (TaskList) taskLists.getSelectedItem();
-        if(selectedTaskList != null && !selectedTaskList.getId().equals("-1")) {
+        if (selectedTaskList != null && !selectedTaskList.getId().equals("-1")) {
             return selectedTaskList;
         }
         return null;
@@ -212,10 +226,11 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
         if (response.isSuccessful()) {
-            if(response.body().getTaskLists() != null) {
+            if (response.body().getTaskLists() != null) {
                 setupTaskListsSpinner(response);
                 animateReveal();
-            } if (response.code() == 201) {
+            }
+            if (response.code() == 201) {
                 newTaskName.setText("");
                 Snackbar.make(root, R.string.task_added_ok, Snackbar.LENGTH_LONG).show();
             }

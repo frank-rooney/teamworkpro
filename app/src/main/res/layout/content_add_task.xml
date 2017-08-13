@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="invisible"
-    android:paddingTop="48dp"
+    android:paddingTop="32dp"
     android:clipToPadding="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.android.frkrny.teamworkpro.ui.addtasks.AddTaskActivity"
@@ -22,6 +22,15 @@
         android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
+        <ImageButton
+            android:id="@+id/show_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_info"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+
         <android.support.design.widget.TextInputLayout
             android:id="@+id/new_task_name_holder"
             android:layout_width="match_parent"
@@ -34,11 +43,20 @@
                 android:id="@+id/new_task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="top|start"
                 android:hint="@string/task_name"
-                android:inputType="text|textCapSentences|textNoSuggestions"
+                android:inputType="textMultiLine|textCapSentences|textNoSuggestions"
                 android:lines="4"/>
 
         </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/add_task_to"
+            android:textSize="12sp"
+            android:textColor="@color/colorAccent"/>
 
         <Spinner
             android:id="@+id/task_lists_spinner"
