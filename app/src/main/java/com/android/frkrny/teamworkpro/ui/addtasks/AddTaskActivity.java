@@ -59,9 +59,13 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         getUIReferences();
         setSupportActionBar(toolbar);
         displayProjectDetails();
+        setClickListeners();
+        makeGetTaskListsApiCall();
+    }
+
+    private void setClickListeners() {
         addTask.setOnClickListener(this);
         showInfo.setOnClickListener(this);
-        makeGetTaskListsApiCall();
     }
 
     @Override
@@ -83,6 +87,10 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setTitle(project.getName() + getString(R.string.title_add_tasks));
     }
 
+    /**
+     * Uses a circular reveal animation to show the edit text and spinner
+     * when the task lists have loaded. Defaults to fading in the views pre lollipop.
+     */
     private void animateReveal() {
         loading.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -129,7 +137,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void retrieveProjectFromIntent() {
-        if (!getIntent().getExtras().isEmpty()) {
+        if (!getIntent().getExtras().isEmpty() && getIntent().hasExtra(KEY_PROJECT)) {
             project = getIntent().getParcelableExtra(KEY_PROJECT);
         } else {
             finish();
@@ -167,12 +175,12 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Called when a view has been clicked.
      *
-     * @param v The view that was clicked.
+     * @param view The view that was clicked.
      */
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.fab:
                 if (validateFieldsNotEmpty()) {
                     TaskList selected = getSelectedTaskList();
@@ -187,6 +195,10 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Performs some validation to prevent invalid api calls.
+     * @return true if we can make an api call, false otherwise.
+     */
     private boolean validateFieldsNotEmpty() {
         if (newTaskName.getText().length() == 0) {
             inputLayout.setError(getString(R.string.error_task_name_cannot_be_empty));
@@ -229,8 +241,9 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
             if (response.body().getTaskLists() != null) {
                 setupTaskListsSpinner(response);
                 animateReveal();
+                return;
             }
-            if (response.code() == 201) {
+            if (response.code() == 200) {
                 newTaskName.setText("");
                 Snackbar.make(root, R.string.task_added_ok, Snackbar.LENGTH_LONG).show();
             }
