@@ -19,6 +19,7 @@
 
     <style name="AppTheme.AddTaskTitleAppearance">
         <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
 </resources>

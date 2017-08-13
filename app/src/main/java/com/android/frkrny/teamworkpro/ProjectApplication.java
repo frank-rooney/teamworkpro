@@ -21,7 +21,7 @@ public class ProjectApplication extends Application {
 
     public TeamworkApiService getTeamworkApiService() {
         if(teamworkApiService == null) {
-            teamworkApiService = TeamworkApiService.Creator.newTeamworkService();
+            teamworkApiService = TeamworkApiService.Creator.newTeamworkService(this);
         }
         return teamworkApiService;
     }

@@ -1,5 +1,6 @@
 package com.android.frkrny.teamworkpro.data;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
+import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,14 +50,18 @@ public interface TeamworkApiService {
     /******** Helper class that sets up a new services *******/
     class Creator {
 
-        public static TeamworkApiService newTeamworkService() {
+        public static TeamworkApiService newTeamworkService(Context context) {
+
+            int cacheSize = 10 * 1024 * 1024; // 10 MB
+            Cache cache = new Cache(context.getCacheDir(), cacheSize);
 
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
                     .addInterceptor(new AuthenticationInterceptor())
-                    .addInterceptor(interceptor);
+                    .addInterceptor(interceptor)
+                    .cache(cache);
 
             Gson gson = new GsonBuilder().create();
 
@@ -76,7 +82,6 @@ public interface TeamworkApiService {
         private String authToken;
 
         AuthenticationInterceptor() {
-            String t = BuildConfig.API_TOKEN;
             String plainToken = String.format(Locale.UK, "%s:%s", BuildConfig.API_TOKEN, "123abc");
             String base64Token;
             try {
