@@ -13,7 +13,6 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ public class ProjectView extends CardView {
     private static final String PROJECT_DATE_FORMAT = "yyyyMMdd";
     private TextView projectName, companyName, description, startDate, endDate, categoryLabel;
     private ImageView projectLogo, staredIcon, notifyAllIcon;
-    private ImageButton announcementBtn;
     private Transformation transformation;
     private Project project;
 
@@ -82,8 +80,6 @@ public class ProjectView extends CardView {
         projectLogo = (ImageView) findViewById(R.id.project_logo);
         staredIcon = (ImageView) findViewById(R.id.project_starred);
         notifyAllIcon = (ImageView) findViewById(R.id.project_notify_all);
-        announcementBtn = (ImageButton) findViewById(R.id.project_announcement);
-
     }
 
     public void bind(Project project) {
@@ -121,7 +117,6 @@ public class ProjectView extends CardView {
     private void displayStatusIcons() {
         staredIcon.setVisibility((project.isStarred() ? View.VISIBLE : View.INVISIBLE));
         notifyAllIcon.setVisibility((project.isNotifyEveryone() ? View.VISIBLE : View.INVISIBLE));
-        announcementBtn.setVisibility((project.isShowAnnouncement() ? View.VISIBLE : View.INVISIBLE));
     }
 
     /**
@@ -138,7 +133,7 @@ public class ProjectView extends CardView {
                 e.printStackTrace();
             }
         } else {
-            startDate.setText("");
+            startDate.setVisibility(View.GONE);
         }
     }
 
@@ -156,7 +151,7 @@ public class ProjectView extends CardView {
                 e.printStackTrace();
             }
         } else {
-            endDate.setText("");
+            endDate.setVisibility(View.GONE);
         }
     }
 
