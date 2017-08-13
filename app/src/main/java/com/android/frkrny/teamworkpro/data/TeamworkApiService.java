@@ -5,6 +5,7 @@ import android.util.Base64;
 
 import com.android.frkrny.teamworkpro.BuildConfig;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
+import com.android.frkrny.teamworkpro.data.model.ToDoItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,10 +21,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by frankrooney on 10/08/2017.
@@ -41,7 +42,7 @@ public interface TeamworkApiService {
     Call<ApiResponse> getTaskListsForProject(@Path("project_id") String projectId);
 
     @POST("/tasklists/{id}/tasks.json")
-    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Query("content") String content);
+    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Body ToDoItem toDoItem);
 
 
     /******** Helper class that sets up a new services *******/

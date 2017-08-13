@@ -18,6 +18,7 @@ import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
 import com.android.frkrny.teamworkpro.data.model.Project;
 import com.android.frkrny.teamworkpro.data.model.TaskList;
+import com.android.frkrny.teamworkpro.data.model.ToDoItem;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,7 +101,8 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         if(validateFieldsNotEmpty()) {
             TaskList selected = getSelectedTaskList();
-            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTaskToTaskList(selected.getId(), newTaskName.getText().toString());
+            ToDoItem toDoItem = new ToDoItem(newTaskName.getText().toString());
+            apiCallAddTask = ((ProjectApplication) getApplication()).getTeamworkApiService().addTaskToTaskList(selected.getId(), toDoItem);
             apiCallAddTask.enqueue(this);
         }
     }
