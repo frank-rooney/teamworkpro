@@ -2,6 +2,7 @@ package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.animation.AnimatorInflater;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorRes;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.android.frkrny.teamworkpro.R;
 import com.android.frkrny.teamworkpro.custom.RoundedTransformBuilder;
 import com.android.frkrny.teamworkpro.data.model.Project;
+import com.android.frkrny.teamworkpro.ui.projectdetail.AddTaskActivity;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -43,9 +45,21 @@ public class ProjectView extends CardView {
     public ProjectView(Context context) {
         super(context);
         setupCardViewProperties();
+        setupClickListener();
         inflateLayoutAndSetLayoutParams(context);
         getUIReferences();
         setupRoundedLogoTransformation();
+    }
+
+    private void setupClickListener() {
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addTaskIntent = new Intent(getContext(), AddTaskActivity.class);
+                addTaskIntent.putExtra(AddTaskActivity.KEY_PROJECT, project);
+                getContext().startActivity(addTaskIntent);
+            }
+        });
     }
 
     private void setupRoundedLogoTransformation() {

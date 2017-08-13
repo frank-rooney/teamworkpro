@@ -20,10 +20,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by frankrooney on 10/08/2017.
@@ -41,7 +41,7 @@ public interface TeamworkApiService {
     Call<ApiResponse> getTaskListsForProject(@Path("project_id") String projectId);
 
     @POST("/tasklists/{id}/tasks.json")
-    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Field("content") String content);
+    Call<ApiResponse> addTaskToTaskList(@Path("id") String taskListId, @Query("content") String content);
 
 
     /******** Helper class that sets up a new services *******/
