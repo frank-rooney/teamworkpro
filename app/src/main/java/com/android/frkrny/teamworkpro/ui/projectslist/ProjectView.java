@@ -1,6 +1,8 @@
 package com.android.frkrny.teamworkpro.ui.projectslist;
 
+import android.animation.AnimatorInflater;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -29,6 +31,7 @@ import java.util.Locale;
 
 public class ProjectView extends CardView {
 
+    private static final String PROJECT_DATE_FORMAT = "yyyyMMdd";
     private TextView projectName, companyName, description, startDate, endDate, categoryLabel;
     private ImageView projectLogo, staredIcon, notifyAllIcon;
     private ImageButton announcementBtn;
@@ -56,6 +59,10 @@ public class ProjectView extends CardView {
     }
 
     private void setupCardViewProperties() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setStateListAnimator(AnimatorInflater.loadStateListAnimator(getContext(), R.animator.card_lift));
+        }
+        setClickable(true);
         setUseCompatPadding(true);
         setRadius(5f);
         setElevation(2f);
@@ -118,7 +125,7 @@ public class ProjectView extends CardView {
      */
     private void displayStartDate() {
         if(!TextUtils.isEmpty(project.getStartDate())) {
-            SimpleDateFormat receivedFormat = new SimpleDateFormat("yyyyMMdd", Locale.UK);
+            SimpleDateFormat receivedFormat = new SimpleDateFormat(PROJECT_DATE_FORMAT, Locale.UK);
             try {
                 Date projectStartDate = receivedFormat.parse(project.getStartDate());
                 startDate.setText(DateUtils.getRelativeTimeSpanString(getContext(), projectStartDate.getTime()));
@@ -135,7 +142,7 @@ public class ProjectView extends CardView {
      */
     private void displayDueDate() {
         if(!TextUtils.isEmpty(project.getEndDate())) {
-            SimpleDateFormat receivedFormat = new SimpleDateFormat("yyyyMMdd", Locale.UK);
+            SimpleDateFormat receivedFormat = new SimpleDateFormat(PROJECT_DATE_FORMAT, Locale.UK);
             try {
                 Date projectEndDate = receivedFormat.parse(project.getEndDate());
                 endDate.setText(DateUtils.formatDateTime(getContext(), projectEndDate.getTime(), 0));
@@ -151,7 +158,7 @@ public class ProjectView extends CardView {
         if(!TextUtils.isEmpty(project.getCategory().getName())) {
             categoryLabel.setText(project.getCategory().getName());
         } else {
-            categoryLabel.setText("");
+            categoryLabel.setVisibility(View.GONE);
         }
     }
 }

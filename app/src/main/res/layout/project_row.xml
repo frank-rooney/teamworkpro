@@ -16,7 +16,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
         <ImageView
             android:id="@+id/project_logo"
@@ -71,7 +72,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/project_logo"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="0dp"
             android:maxLines="4"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
@@ -94,7 +95,6 @@
             android:layout_marginStart="16dp"
             android:gravity="start|center"
             android:fontFamily="sans-serif"
-            android:textColor="@color/start_date"
             android:textSize="14sp"
             android:drawableLeft="@drawable/ic_date"
             android:drawableStart="@drawable/ic_date"
@@ -113,7 +113,6 @@
             android:layout_marginStart="8dp"
             android:gravity="start|center"
             android:fontFamily="sans-serif"
-            android:textColor="@color/due_date"
             android:textSize="14sp"
             android:drawableLeft="@drawable/ic_date"
             android:drawableStart="@drawable/ic_date"
@@ -131,8 +130,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
             android:gravity="start|center"
             android:textStyle="bold"
             android:textAllCaps="true"
