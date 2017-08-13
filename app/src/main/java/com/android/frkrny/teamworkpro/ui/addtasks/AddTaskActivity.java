@@ -1,20 +1,29 @@
 package com.android.frkrny.teamworkpro.ui.addtasks;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.android.frkrny.teamworkpro.ProjectApplication;
 import com.android.frkrny.teamworkpro.R;
+import com.android.frkrny.teamworkpro.custom.Constants;
 import com.android.frkrny.teamworkpro.data.model.ApiResponse;
 import com.android.frkrny.teamworkpro.data.model.Project;
 import com.android.frkrny.teamworkpro.data.model.TaskList;
@@ -33,6 +42,9 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout inputLayout;
     private TextInputEditText newTaskName;
     private Spinner taskLists;
+    private Toolbar toolbar;
+    private ProgressBar loading;
+    private NestedScrollView parent;
     private FloatingActionButton addTask;
     private Call<ApiResponse> apiCallTaskLists, apiCallAddTask;
     private Project project;
@@ -42,9 +54,9 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         retrieveProjectFromIntent();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getUIReferences();
         setSupportActionBar(toolbar);
+        displayProjectDetails();
         addTask.setOnClickListener(this);
         makeGetTaskListsApiCall();
     }
@@ -59,6 +71,57 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     protected void onDestroy() {
         super.onDestroy();
         cancelApiRequests();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void displayProjectDetails() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(project.getName() + " - Add Tasks");
+    }
+
+    private void animateReveal() {
+        loading.setVisibility(View.GONE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            parent.postDelayed(new Runnable() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void run() {
+                    // get the center for the clipping circle
+                    int cx = parent.getWidth() / 2;
+                    int cy = parent.getHeight() / 2;
+                    // get the final radius for the clipping circle
+                    float finalRadius = (float) Math.hypot(cx, cy);
+                    // create the animator for this view (the start radius is zero)
+                    Animator anim =
+                            ViewAnimationUtils.createCircularReveal(parent, cx, cy, 0, finalRadius);
+                    // make the view visible and start the animation
+                    parent.setVisibility(View.VISIBLE);
+                    anim.start();
+                }
+            }, Constants.MEDIUM_ANIM);
+        } else {
+            fadeInView(parent);
+        }
+    }
+
+    /**
+     * Starts an animation to fade in a view.
+     * @param view The View to fade in
+     */
+    private void fadeInView(final View view) {
+        if(view != null && view.getVisibility() == View.INVISIBLE ||
+                view != null && view.getVisibility() == View.GONE) {
+            view.setAlpha(Constants.TRANSPARENT);
+            view.setVisibility(View.VISIBLE);
+            view.animate().alpha(Constants.OPAQUE).setDuration(Constants.MEDIUM_ANIM).setInterpolator(new LinearOutSlowInInterpolator()).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    view.setVisibility(View.VISIBLE);
+                }
+            }).start();
+        }
     }
 
     private void retrieveProjectFromIntent() {
@@ -85,11 +148,14 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getUIReferences() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         root = (ViewGroup) findViewById(R.id.root);
         addTask = (FloatingActionButton) findViewById(fab);
         inputLayout = (TextInputLayout) findViewById(R.id.new_task_name_holder);
         newTaskName = (TextInputEditText) findViewById(R.id.new_task_name);
         taskLists = (Spinner) findViewById(R.id.task_lists_spinner);
+        loading = (ProgressBar) findViewById(R.id.loading_progress);
+        parent = (NestedScrollView) findViewById(R.id.nested_scrollview_parent);
     }
 
     /**
@@ -147,6 +213,7 @@ public class AddTaskActivity extends AppCompatActivity implements View.OnClickLi
         if (response.isSuccessful()) {
             if(response.body().getTaskLists() != null) {
                 setupTaskListsSpinner(response);
+                animateReveal();
             } if (response.code() == 201) {
                 Snackbar.make(root, R.string.task_added_ok, Snackbar.LENGTH_LONG).show();
             }

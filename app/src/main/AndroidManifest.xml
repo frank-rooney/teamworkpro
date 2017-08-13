@@ -21,6 +21,7 @@
         </activity>
         <activity
             android:name=".ui.addtasks.AddTaskActivity"
+            android:parentActivityName=".ui.projectslist.ProjectsActivity"
             android:label="@string/title_activity_add_task"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

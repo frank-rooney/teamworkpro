@@ -1,6 +1,7 @@
 package com.android.frkrny.teamworkpro.ui.projectslist;
 
 import android.animation.AnimatorInflater;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -41,9 +42,11 @@ public class ProjectView extends CardView {
     private ImageView projectLogo, staredIcon, notifyAllIcon;
     private Transformation transformation;
     private Project project;
+    private Context context;
 
     public ProjectView(Context context) {
         super(context);
+        this.context = context;
         setupCardViewProperties();
         setupClickListener();
         inflateLayoutAndSetLayoutParams(context);
@@ -57,7 +60,12 @@ public class ProjectView extends CardView {
             public void onClick(View v) {
                 Intent addTaskIntent = new Intent(getContext(), AddTaskActivity.class);
                 addTaskIntent.putExtra(AddTaskActivity.KEY_PROJECT, project);
-                getContext().startActivity(addTaskIntent);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getContext().startActivity(addTaskIntent,
+                            ActivityOptions.makeSceneTransitionAnimation(((ProjectsActivity) context)).toBundle());
+                } else {
+                    context.startActivity(addTaskIntent);
+                }
             }
         });
     }
@@ -76,7 +84,7 @@ public class ProjectView extends CardView {
 
     private void setupCardViewProperties() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setStateListAnimator(AnimatorInflater.loadStateListAnimator(getContext(), R.animator.card_lift));
+            setStateListAnimator(AnimatorInflater.loadStateListAnimator(context, R.animator.card_lift));
         }
         setClickable(true);
         setUseCompatPadding(true);
@@ -122,7 +130,7 @@ public class ProjectView extends CardView {
 
     private void displayLogo() {
         if(!TextUtils.isEmpty(project.getLogo())) {
-            Picasso.with(getContext()).load(project.getLogo()).fit().transform(transformation).into(projectLogo);
+            Picasso.with(context).load(project.getLogo()).fit().transform(transformation).into(projectLogo);
         } else {
             projectLogo.setImageResource(R.drawable.ic_logo_placeholder);
         }
@@ -141,7 +149,7 @@ public class ProjectView extends CardView {
             SimpleDateFormat receivedFormat = new SimpleDateFormat(PROJECT_DATE_FORMAT, Locale.UK);
             try {
                 Date projectStartDate = receivedFormat.parse(project.getStartDate());
-                startDate.setText(DateUtils.getRelativeTimeSpanString(getContext(), projectStartDate.getTime()));
+                startDate.setText(DateUtils.getRelativeTimeSpanString(context, projectStartDate.getTime()));
                 applyTintToLeftDrawable(startDate, R.color.start_date);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -159,7 +167,7 @@ public class ProjectView extends CardView {
             SimpleDateFormat receivedFormat = new SimpleDateFormat(PROJECT_DATE_FORMAT, Locale.UK);
             try {
                 Date projectEndDate = receivedFormat.parse(project.getEndDate());
-                endDate.setText(DateUtils.formatDateTime(getContext(), projectEndDate.getTime(), 0));
+                endDate.setText(DateUtils.formatDateTime(context, projectEndDate.getTime(), 0));
                 applyTintToLeftDrawable(endDate, R.color.due_date);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -175,7 +183,7 @@ public class ProjectView extends CardView {
     private void applyTintToLeftDrawable(TextView textView, @ColorRes int color) {
         Drawable icon = textView.getCompoundDrawables()[0];
         Drawable wrapped = DrawableCompat.wrap(icon);
-        DrawableCompat.setTint(wrapped.mutate(), ContextCompat.getColor(getContext(), color));
+        DrawableCompat.setTint(wrapped.mutate(), ContextCompat.getColor(context, color));
         textView.setCompoundDrawables(wrapped, null, null, null);
     }
 
